@@ -1,0 +1,24 @@
+.trello-board {
+  display: grid;
+  margin: 50px 25px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 25px;
+}
+
+.trello-list__title {
+  font-size: 20px;
+  background: tomato;
+  color: white;
+  text-align: center;
+}
+
+.trello-card {
+  display: flex;
+  justify-content: space-between;
+  min-height: 50px;
+
+  span {
+    cursor: pointer;
+    font-size: 30px;
+  }
+}
