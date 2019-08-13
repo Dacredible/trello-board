@@ -1,3 +1,11 @@
 html {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.App {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 40px 50px 1fr;
+  background-color: #0079bf;
+
+}

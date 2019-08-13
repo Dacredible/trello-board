@@ -5,8 +5,43 @@ export default class TrelloBoard extends Component {
   state = {
     boards: [
       { title: 'First', cards: [{ text: 'buy' }, { text: 'bought' }] },
-      { title: 'Second', cards: [{ text: 'buy' }, { text: 'bought' }] },
-      { title: 'Third', cards: [{ text: 'buy' }, { text: 'bought' }] },
+      {
+        title: 'Second',
+        cards: [
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+        ],
+      },
+      {
+        title: 'Third',
+        cards: [
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+          { text: 'bought' },
+          { text: 'buy' },
+        ],
+      },
       { title: 'Fourth', cards: [{ text: 'buy' }, { text: 'bought' }] },
     ],
   };
@@ -50,17 +85,20 @@ export default class TrelloBoard extends Component {
 
   renderList(list) {
     return (
-      <div className="trello-list">
-        <h2 className="trello-list__title">{list.title}</h2>
-        <ul className="trello-list__container">{this.renderCards(list)}</ul>
-        <button
-          type="button"
-          onClick={() => {
-            this.handleAddCard(list);
-          }}>
-          Add Card
-        </button>
-      </div>
+      <section className="trello-list__container">
+        <div className="trello-list">
+          <h2 className="trello-list__title">{list.title}</h2>
+          <ul className="trello-card__container">{this.renderCards(list)}</ul>
+          <div
+            className="trello-list__button"
+            type="button"
+            onClick={() => {
+              this.handleAddCard(list);
+            }}>
+            + Add a card
+          </div>
+        </div>
+      </section>
     );
   }
 
@@ -86,6 +124,15 @@ export default class TrelloBoard extends Component {
 
   render() {
     const { boards } = this.state;
-    return <main className="trello-board">{boards.map(item => this.renderList(item))}</main>;
+    return (
+      <main className="trello-board">
+        {boards.map(item => this.renderList(item))}
+        <section className="trello-list__container">
+          <div className="trello-list">
+            <h2 className="trello-list__title">Add a new list</h2>
+          </div>
+        </section>
+      </main>
+    );
   }
 }

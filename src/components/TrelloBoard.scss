@@ -1,21 +1,60 @@
 .trello-board {
-  display: grid;
-  margin: 50px 25px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 25px;
+  display: flex;
+  margin: 0;
+  height: 100%;
+  overflow-x: auto;
+
+  &::after {
+    content: '';
+    flex: 0 0 10px;
+  }
+}
+
+.trello-list__container {
+  flex: 0 0 auto;
+  width: 272px;
+  height: calc(100% - 27px);
+  margin-left: 10px;
+}
+
+.trello-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #dfe1e6;
+  border-radius: 3px;
+  height: auto;
+  max-height: 100%;
 }
 
 .trello-list__title {
-  font-size: 20px;
-  background: tomato;
-  color: white;
-  text-align: center;
+  font-size: 16px;
+  height: 36px;
+  color: #182c4c;
+  font-weight: bold;
+}
+
+.trello-list__button {
+  height: 36px;
+  cursor: pointer;
+}
+
+.trello-card__container {
+  max-height: calc(100% - 72px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 10px;
 }
 
 .trello-card {
   display: flex;
   justify-content: space-between;
   min-height: 50px;
+  background: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 
   span {
     cursor: pointer;
