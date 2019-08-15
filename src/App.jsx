@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <nav>App Bar</nav>
-      <header>Board Bar</header>
+      <header>Board Title</header>
       <TrelloBoard />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './TrelloBoard.scss';
 import uuidv1 from 'uuid/v1';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import initialData from '../initial-data';
 import TrelloList from './TrelloList';
 
@@ -65,8 +65,10 @@ export default class TrelloBoard extends Component {
   };
 
   onDragEnd = (result) => {
-    const { draggableId, source, destination } = result;
-    const { lists } = this.state;
+    const {
+      draggableId, source, destination, type,
+    } = result;
+    const { lists, listOrder } = this.state;
 
     if (!destination) {
       return;
@@ -75,6 +77,20 @@ export default class TrelloBoard extends Component {
       destination.droppableId === source.droppableId
       && destination.index === source.index
     ) {
+      return;
+    }
+
+    if (type === 'LIST') {
+      const newListOrder = Array.from(listOrder);
+      newListOrder.splice(source.index, 1);
+      newListOrder.splice(destination.index, 0, draggableId);
+
+      const newState = {
+        ...this.state,
+        listOrder: newListOrder,
+      };
+
+      this.setState(newState);
       return;
     }
 
@@ -101,9 +117,6 @@ export default class TrelloBoard extends Component {
 
       this.setState(newState);
     } else {
-      // TODO: move between lists
-      console.log(source, destination);
-      console.log(startList, endList);
       const newStartCardOrder = Array.from(startList.cardOrder);
       const newEndCardOrder = Array.from(endList.cardOrder);
       newStartCardOrder.splice(source.index, 1);
@@ -136,25 +149,34 @@ export default class TrelloBoard extends Component {
     const { cards, lists, listOrder } = this.state;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <main className="trello-board">
-          {listOrder.map((listId) => {
-            const list = lists[listId];
-            const cardsArr = list.cardOrder.map(cardId => cards[cardId]);
-            return (
-              <TrelloList
-                key={list.id}
-                list={list}
-                cards={cardsArr}
-                addCard={this.handleAddCard}
-              />
-            );
-          })}
-          <section className="trello-list__container trello-list__add-new">
-            <div className="trello-list" onClick={this.handleAddList}>
-              <h2 className="trello-list__title">+ Add another list</h2>
-            </div>
-          </section>
-        </main>
+        <Droppable droppableId="board" direction="horizontal" type="LIST">
+          {provided => (
+            <main
+              className="trello-board"
+              {...provided.droppableProps}
+              ref={provided.innerRef}>
+              {listOrder.map((listId, index) => {
+                const list = lists[listId];
+                const cardsArr = list.cardOrder.map(cardId => cards[cardId]);
+                return (
+                  <TrelloList
+                    key={list.id}
+                    list={list}
+                    cards={cardsArr}
+                    index={index}
+                    addCard={this.handleAddCard}
+                  />
+                );
+              })}
+              {provided.placeholder}
+              <section className="trello-list__container trello-list__add-new">
+                <div className="trello-list" onClick={this.handleAddList}>
+                  <h2 className="trello-list__title">+ Add another list</h2>
+                </div>
+              </section>
+            </main>
+          )}
+        </Droppable>
       </DragDropContext>
     );
   }

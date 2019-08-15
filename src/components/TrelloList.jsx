@@ -1,5 +1,5 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import TrelloCard from './TrelloCard';
 
 const handleAddCard = (list, cb) => {
@@ -16,33 +16,44 @@ const renderCards = cards => cards.map((card, index) => (
 ));
 
 const TrelloList = (props) => {
-  const { list, cards, addCard } = props;
+  const {
+    list, cards, addCard, index,
+  } = props;
 
   return (
-    <section className="trello-list__container">
-      <div className="trello-list">
-        <h2 className="trello-list__title">{list.title}</h2>
-        <Droppable droppableId={list.id}>
-          {provided => (
-            <ul
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="trello-card__container">
-              {renderCards(cards)}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-        <div
-          className="trello-list__button"
-          type="button"
-          onClick={() => {
-            handleAddCard(list, addCard);
-          }}>
-          <h3 className="button__text">+ Add a card</h3>
-        </div>
-      </div>
-    </section>
+    <Draggable draggableId={list.id} index={index}>
+      {provided => (
+        <section
+          className="trello-list__container"
+          {...provided.draggableProps}
+          ref={provided.innerRef}>
+          <div className="trello-list">
+            <h2 className="trello-list__title" {...provided.dragHandleProps}>
+              {list.title}
+            </h2>
+            <Droppable droppableId={list.id} type="CARD">
+              {innerProvided => (
+                <ul
+                  {...innerProvided.droppableProps}
+                  ref={innerProvided.innerRef}
+                  className="trello-card__container">
+                  {renderCards(cards)}
+                  {innerProvided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+            <div
+              className="trello-list__button"
+              type="button"
+              onClick={() => {
+                handleAddCard(list, addCard);
+              }}>
+              <h3 className="button__text">+ Add a card</h3>
+            </div>
+          </div>
+        </section>
+      )}
+    </Draggable>
   );
 };
 
