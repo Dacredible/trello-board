@@ -5,13 +5,15 @@ import TrelloCard from './TrelloCard';
 const handleAddCard = (list, cb) => {
   // eslint-disable-next-line no-alert
   const cardContent = window.prompt('Please enter the content of new card');
-  if (cardContent === '') {
+  if (!cardContent) {
     return;
   }
   cb({ listId: list.id, cardContent });
 };
 
-const renderCards = cards => cards.map((card, index) => <TrelloCard key={card.id} card={card} index={index} />);
+const renderCards = cards => cards.map((card, index) => (
+    <TrelloCard key={card.id} card={card} index={index} />
+));
 
 const TrelloList = (props) => {
   const { list, cards, addCard } = props;

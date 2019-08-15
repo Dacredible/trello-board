@@ -43,7 +43,7 @@ export default class TrelloBoard extends Component {
     const { lists, listOrder } = this.state;
     // eslint-disable-next-line no-alert
     const listTitle = window.prompt('Please enter the title of new list');
-    if (listTitle === '') {
+    if (!listTitle) {
       return;
     }
     const newList = {
@@ -96,6 +96,35 @@ export default class TrelloBoard extends Component {
         lists: {
           ...lists,
           [newList.id]: newList,
+        },
+      };
+
+      this.setState(newState);
+    } else {
+      // TODO: move between lists
+      console.log(source, destination);
+      console.log(startList, endList);
+      const newStartCardOrder = Array.from(startList.cardOrder);
+      const newEndCardOrder = Array.from(endList.cardOrder);
+      newStartCardOrder.splice(source.index, 1);
+      newEndCardOrder.splice(destination.index, 0, draggableId);
+
+      const newStartList = {
+        ...startList,
+        cardOrder: newStartCardOrder,
+      };
+
+      const newEndList = {
+        ...endList,
+        cardOrder: newEndCardOrder,
+      };
+
+      const newState = {
+        ...this.state,
+        lists: {
+          ...lists,
+          [newStartList.id]: newStartList,
+          [newEndList.id]: newEndList,
         },
       };
 
