@@ -15,6 +15,20 @@
   width: 272px;
   height: calc(100% - 27px);
   margin-left: 10px;
+  user-select: none;
+}
+
+.trello-list__add-new {
+
+  .trello-list {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+
+    .trello-list__title {
+      font-size: 14px;
+      color: hsla(0, 0%, 100%, .8);
+    }
+  }
 }
 
 .trello-list {
@@ -29,14 +43,28 @@
 
 .trello-list__title {
   font-size: 16px;
-  height: 36px;
+  line-height: 36px;
   color: #182c4c;
   font-weight: bold;
+  padding: 0 10px;
 }
 
 .trello-list__button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   height: 36px;
   cursor: pointer;
+  padding: 0 10px;
+
+  &:hover {
+    background-color: rgba(9, 30, 66, .13);
+  }
+
+  .button__text {
+    color: #6b778c;
+    font-size: 14px;
+  }
 }
 
 .trello-card__container {
