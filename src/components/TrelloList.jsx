@@ -1,60 +1,72 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import TrelloCard from './TrelloCard';
+import NewCard from './NewCard';
 
-const handleAddCard = (list, cb) => {
-  // eslint-disable-next-line no-alert
-  const cardContent = window.prompt('Please enter the content of new card');
-  if (!cardContent) {
-    return;
-  }
-  cb({ listId: list.id, cardContent });
-};
+export default class TrelloList extends React.Component {
+  state = {
+    isNewCardDisplay: false,
+  };
 
-const renderCards = cards => cards.map((card, index) => (
-    <TrelloCard key={card.id} card={card} index={index} />
-));
+  handleAddCard = (data) => {
+    const { list, addCard } = this.props;
 
-const TrelloList = (props) => {
-  const {
-    list, cards, addCard, index,
-  } = props;
+    if (data.type === 'add') {
+      addCard({ listId: list.id, cardContent: data.cardContent });
+    }
+    this.setState({ isNewCardDisplay: false });
+  };
 
-  return (
-    <Draggable draggableId={list.id} index={index}>
-      {provided => (
-        <section
-          className="trello-list__container"
-          {...provided.draggableProps}
-          ref={provided.innerRef}>
-          <div className="trello-list">
-            <h2 className="trello-list__title" {...provided.dragHandleProps}>
-              {list.title}
-            </h2>
-            <Droppable droppableId={list.id} type="CARD">
-              {innerProvided => (
-                <ul
-                  {...innerProvided.droppableProps}
-                  ref={innerProvided.innerRef}
-                  className="trello-card__container">
-                  {renderCards(cards)}
-                  {innerProvided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-            <div
-              className="trello-list__button"
-              type="button"
-              onClick={() => {
-                handleAddCard(list, addCard);
-              }}>
-              <h3 className="button__text">+ Add a card</h3>
+  renderCards = cards => cards.map((card, index) => (
+      <TrelloCard key={card.id} card={card} index={index} />
+  ));
+
+  render() {
+    const { list, cards, index } = this.props;
+
+    const { isNewCardDisplay } = this.state;
+    return (
+      <Draggable draggableId={list.id} index={index}>
+        {provided => (
+          <section
+            className="trello-list__container"
+            {...provided.draggableProps}
+            ref={provided.innerRef}>
+            <div className="trello-list">
+              <h2 className="trello-list__title" {...provided.dragHandleProps}>
+                {list.title}
+              </h2>
+              <Droppable droppableId={list.id} type="CARD">
+                {innerProvided => (
+                  <ul
+                    {...innerProvided.droppableProps}
+                    ref={innerProvided.innerRef}
+                    className="trello-card__container">
+                    {this.renderCards(cards)}
+                    {innerProvided.placeholder}
+                    <NewCard
+                      isDisplay={isNewCardDisplay}
+                      addCardDone={this.handleAddCard}
+                    />
+                  </ul>
+                )}
+              </Droppable>
+              <div
+                className={
+                  !isNewCardDisplay
+                    ? 'trello-list__button is-display'
+                    : 'trello-list__button'
+                }
+                type="button"
+                onClick={() => {
+                  this.setState({ isNewCardDisplay: true });
+                }}>
+                <h3 className="button__text">+ Add a card</h3>
+              </div>
             </div>
-          </div>
-        </section>
-      )}
-    </Draggable>
-  );
-};
-
-export default TrelloList;
+          </section>
+        )}
+      </Draggable>
+    );
+  }
+}
