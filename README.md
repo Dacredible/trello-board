@@ -1,8 +1,8 @@
-#Trello Board
+# Trello Board
 
 Website: https://dacredible.github.io/trello-board/
 
-###Why I start this project
+### Why I start this project
 
 Ran into this quesition during an interview, originally no drag and drop requested, only moving cards through button. After that interview I feels it's a good project to pratice. So I decided to do a Trello mockup project.
 
